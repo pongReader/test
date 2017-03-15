@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+    	<meta charset="utf-8"/>
+        <title>title</title>
+        <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script>
+			jQuery.easing['jswing'] = jQuery.easing['swing'];
+			jQuery.extend( jQuery.easing,
+			{
+			def: 'easeOutQuad',
+			swing: function (x, t, b, c, d) {
+			//alert(jQuery.easing.default);
+			return jQuery.easing[jQuery.easing.def](x, t, b, c, d);
+			},
+			easeInQuad: function (x, t, b, c, d) {
+			return c*(t/=d)*t + b;
+			},
+			easeOutQuad: function (x, t, b, c, d) {
+			return -c *(t/=d)*(t-2) + b;
+			},
+			easeInOutQuad: function (x, t, b, c, d) {
+			if ((t/=d/2) < 1) return c/2*t*t + b;
+			return -c/2 * ((--t)*(t-2) - 1) + b;
+			},
+			easeInCubic: function (x, t, b, c, d) {
+			return c*(t/=d)*t*t + b;
+			},
+			easeOutCubic: function (x, t, b, c, d) {
+			return c*((t=t/d-1)*t*t + 1) + b;
+			},
+			easeInOutCubic: function (x, t, b, c, d) {
+			if ((t/=d/2) < 1) return c/2*t*t*t + b;
+			return c/2*((t-=2)*t*t + 2) + b;
+			},
+			easeInQuart: function (x, t, b, c, d) {
+			return c*(t/=d)*t*t*t + b;
+			},
+			easeOutQuart: function (x, t, b, c, d) {
+			return -c * ((t=t/d-1)*t*t*t - 1) + b;
+			},
+			easeInOutQuart: function (x, t, b, c, d) {
+			if ((t/=d/2) < 1) return c/2*t*t*t*t + b;
+			return -c/2 * ((t-=2)*t*t*t - 2) + b;
+			},
+			easeInQuint: function (x, t, b, c, d) {
+			return c*(t/=d)*t*t*t*t + b;
+			},
+			easeOutQuint: function (x, t, b, c, d) {
+			return c*((t=t/d-1)*t*t*t*t + 1) + b;
+			},
+			easeInOutQuint: function (x, t, b, c, d) {
+			if ((t/=d/2) < 1) return c/2*t*t*t*t*t + b;
+			return c/2*((t-=2)*t*t*t*t + 2) + b;
+			},
+			easeInSine: function (x, t, b, c, d) {
+			return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+			},
+			easeOutSine: function (x, t, b, c, d) {
+			return c * Math.sin(t/d * (Math.PI/2)) + b;
+			},
+			easeInOutSine: function (x, t, b, c, d) {
+			return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+			},
+			easeInExpo: function (x, t, b, c, d) {
+			return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+			},
+			easeOutExpo: function (x, t, b, c, d) {
+			return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+			},
+			easeInOutExpo: function (x, t, b, c, d) {
+			if (t==0) return b;
+			if (t==d) return b+c;
+			if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+			return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+			},
+			easeInCirc: function (x, t, b, c, d) {
+			return -c * (Math.sqrt(1 - (t/=d)*t) - 1) + b;
+			},
+			easeOutCirc: function (x, t, b, c, d) {
+			return c * Math.sqrt(1 - (t=t/d-1)*t) + b;
+			},
+			easeInOutCirc: function (x, t, b, c, d) {
+			if ((t/=d/2) < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;
+			return c/2 * (Math.sqrt(1 - (t-=2)*t) + 1) + b;
+			},
+			easeInElastic: function (x, t, b, c, d) {
+			var s=1.70158;var p=0;var a=c;
+			if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+			if (a < Math.abs(c)) { a=c; var s=p/4; }
+			else var s = p/(2*Math.PI) * Math.asin (c/a);
+			return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+			},
+			easeOutElastic: function (x, t, b, c, d) {
+			var s=1.70158;var p=0;var a=c;
+			if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+			if (a < Math.abs(c)) { a=c; var s=p/4; }
+			else var s = p/(2*Math.PI) * Math.asin (c/a);
+			return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+			},
+			easeInOutElastic: function (x, t, b, c, d) {
+			var s=1.70158;var p=0;var a=c;
+			if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
+			if (a < Math.abs(c)) { a=c; var s=p/4; }
+			else var s = p/(2*Math.PI) * Math.asin (c/a);
+			if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+			return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+			},
+			easeInBack: function (x, t, b, c, d, s) {
+			if (s == undefined) s = 1.70158;
+			return c*(t/=d)*t*((s+1)*t - s) + b;
+			},
+			easeOutBack: function (x, t, b, c, d, s) {
+			if (s == undefined) s = 1.70158;
+			return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+			},
+			easeInOutBack: function (x, t, b, c, d, s) {
+			if (s == undefined) s = 1.70158; 
+			if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+			return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+			},
+			easeInBounce: function (x, t, b, c, d) {
+			return c - jQuery.easing.easeOutBounce (x, d-t, 0, c, d) + b;
+			},
+			easeOutBounce: function (x, t, b, c, d) {
+			if ((t/=d) < (1/2.75)) {
+			return c*(7.5625*t*t) + b;
+			} else if (t < (2/2.75)) {
+			return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+			} else if (t < (2.5/2.75)) {
+			return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+			} else {
+			return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+			}
+			},
+			easeInOutBounce: function (x, t, b, c, d) {
+			if (t < d/2) return jQuery.easing.easeInBounce (x, t*2, 0, c, d) * .5 + b;
+			return jQuery.easing.easeOutBounce (x, t*2-d, 0, c, d) * .5 + c*.5 + b;
+			}
+			});
+
+        </script>
+    </head>
+    <body>
+    	<style type="text/css">
+		
+			.hide{width:0px !important;
+			height:0px !important;position:fixed !important;
+			background:none !important;border:0 !important;
+			outline:0 !important;left:-100% !important;top:-100% !important;}
+		
+        *{
+			position:relative;padding:0;margin:0;font-size:0.97em;
+			box-sizing:border-box;-webkit-box-sizing:border-box;
+			word-break:break-all;color:#333;
+		}
+		html,body{float:left;overflow:auto;width:100%;height:100%;background-color:#232323;}
+		ul,li{list-style:none;}
+		.container{min-width:100%;width:100%;height:auto;}
+		.wrap{width:1000px;display:table;margin-left:auto;margin-right:auto;}
+		.wrap > ul{padding:10px 0;background-color:#232323;}
+		.wrap > ul > li{padding:10px 6px;overflow:hidden;}
+		.wrap > ul > li:hover{border-bottom:2px solid #F33;cursor:pointer;}
+		.wrap > ul > li.f{}
+		.wrap > ul > li.n{}
+		.wrap > ul > li.e{}
+		.wrap > ul > li > div{width:100%;height:100%;}
+		.wrap > ul > li > div > div{position:absolute;top:0;left:0;}
+		.wrap > ul > li > div > .top{
+			width:100%;height:30px;
+			background:#fafafa;
+			padding:6px 4px;
+			z-index:2;overflow:hidden;
+		}
+		.wrap > ul > li > div > .top > .title{float:left;}
+		.wrap > ul > li > div > .top > .reg_date{float:right;position:absolute;right:6px;top:6px;background:#fafafa;}
+		.wrap > ul > li > div > .top > .reg_date > .t{font-weight:bold;color:#F33;padding:0 2px;}
+		.wrap > ul > li > div > .top > .reg_date > .txt{color:#666;}
+		.wrap > ul > li > div > .content{
+			right:0;bottom:0;cursor:pointer;
+			background:#333;
+		}
+		.wrap > ul > li > div > .content:hover{background:#444;}
+		
+		
+        </style>
+
+		<button class="aa">[ a_6 ]</button>
+		<button class="ab">[ a_10 ]</button>
+        <button class="ba">[ 1 ]</button><button class="bb">[ 2 ]</button>
+        <button class="bc">[ 3 ]</button><button class="bd">[ 4 ]</button>
+        <button class="be">[ 5 ]</button><button class="bf">[ 6 ]</button>
+        <button class="bg">[ 7 ]</button><button class="bh">[ 8 ]</button>
+        <button class="bi">[ 9 ]</button><button class="bj">[ 10 ]</button>
+        
+        <button class="bz">[ 50 ]</button><button class="b0">[ 1000 ]</button>
+        <button class="b00">[ 7auto ]</button>
+        <button class="hides">[ HIDE ]</button>
+        <br/>
+        <br/>
+        <div class="container" id="main_board">
+            <div class="wrap">
+            
+        
+            	<ul id="part_viewa">
+                	<li><span>#</span><span>액션</span></li>
+                    <li><span>#</span><span>감자</span></li>
+                    <li><span>#</span><span>모드</span></li>
+                    <li><span>#</span><span>무드</span></li>
+                    <li><span>#</span><span>할로윈</span></li>
+                    <li><span>#</span><span>공포</span></li>
+                    <li><span>#</span><span>용기</span></li>
+
+                	<li><span>#</span><span>혐오</span></li>
+                    <li><span>#</span><span>슬픔</span></li>
+                    <li><span>#</span><span>활기</span></li>
+                    <li><span>#</span><span>혼란</span></li>
+                    <li><span>#</span><span>압박</span></li>
+                    <li><span>#</span><span>포박</span></li>
+                    <li><span>#</span><span>구타</span></li>
+                    
+                	<li><span>#</span><span>협박</span></li>
+                    <li><span>#</span><span>고어</span></li>
+                    <li><span>#</span><span>재난</span></li>
+                    <li><span>#</span><span>드라큘라</span></li>
+                    <li><span>#</span><span>늑대인간</span></li>
+                    <li><span>#</span><span>마법</span></li>
+                    <li><span>#</span><span>판타지</span></li>
+                </ul>
+
+
+                
+            	<ul id="part_viewb">
+                	
+                    <li><div>
+                    	<div class="top">
+                        	<div class="title">타이틀입니다</div>
+                            <div class="reg_date"><span class="txt">[</span><span class="t">1</span><span class="txt">]번</span></div>
+                        </div>
+                        <div class="content">
+                        
+                        </div>
+                    </div></li>
+                    
+                    
+                    <!--지우셔도 됩니다-->    
+                    <li><div>
+                    	<div class="top">
+                        	<div class="title">타이틀이조금엄청길어서글씨가넘치는현상은 위와같이 처리하였음.</div>
+                            <div class="reg_date"><span class="txt">[</span><span class="t">1</span><span class="txt">]번</span></div>
+                        </div>
+                        <div class="content">
+                        
+                        </div>
+                    </div></li>
+                    <li><div>
+                    	<div class="top">
+                        	<div class="title">연습용입니다</div>
+                            <div class="reg_date"><span class="txt">[</span><span class="t">1</span><span class="txt">]번</span></div>
+                        </div>
+                        <div class="content">
+                        
+                        </div>
+                    </div></li>
+                    <li><div>
+                    	<div class="top">
+                        	<div class="title">타이틀입니다</div>
+                            <div class="reg_date"><span class="txt">[</span><span class="t">1</span><span class="txt">]번</span></div>
+                        </div>
+                        <div class="content">
+                        
+                        </div>
+                    </div></li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+        <noscript>일부 브라주저에선 스크립트 작동이 안 될수도 있습니다.</noscript>
+        <script type="text/javascript">
+		
+		/*
+		2017-03-04
+		fcapp
+		*/
+		
+		
+		window.ef = function(selector) {
+			var selectorType = 'querySelectorAll';
+		
+			if (selector.indexOf('#') === 0) {
+				selectorType = 'getElementById';
+				selector = selector.substr(1, selector.length);
+			}
+		
+			return document[selectorType](selector);
+		};
+        (function(global,contentOnLoaded,windowOnLoaded,app_factory){
+			global.onload=windowOnLoaded;
+			var
+			docs				= global.document,
+			delta_loaded_events = ['DOMContentLoaded','onreadystatechange'],
+			screen_size			= [screen.width,screen.height];
+			var parameter		= {
+				wrap_width		: (screen_size[0]>=1200)?1200:1000
+			}
+			if(docs.addEventListener){
+				/*리스너 지원*/
+				docs.addEventListener(delta_loaded_events[0],function(){
+					docs.removeEventListener(delta_loaded_events[0],arguments.callee,false);
+					contentOnLoaded(parameter);
+				},false);
+			}else if(docs.atachEvent){
+				/*리스너 미지원*/
+				docs.atachEvent(delta_loaded_events[1],function(){
+					docs.detachEvent(delta_loaded_events[1]);	
+					contentOnLoaded(parameter);
+				});
+			}else{
+				return false;
+			}
+		})((window)?window:this,function(parameter){
+			ef('.wrap').forEach(function(d,k,a){
+				d.style.width=parameter.wrap_width+'px';
+			});
+			/*contentOnLoaded*/
+			function partful_viewer(box,x,height){
+				this.box = box;
+
+				//box.style.float='left';
+				//box.style.overflow='hidden';
+				this.self_value = {
+					width 			: (this.box.offsetWidth)?this.box.offsetWidth:parameter.wrap_width,
+					childrenNodes	: this.box.children
+				},i=0;
+				this.offset_y=-1;
+				this.lefts=0;
+				for(i=0;i<this.self_value.childrenNodes.length;i++){
+					this.cself = this.self_value.childrenNodes[i];
+					$(this.cself).find('div > .top > .reg_date > .t').text(i+1);
+					this.offset_x = i%x;
+					this.offset_y = (this.offset_x=='0')?this.offset_y+1:this.offset_y;
+					//console.log(this.offset_x);
+					if(this.cself.style.top==''&&this.cself.style.left==''){
+						this.cself.style.top=(height!='auto')?height*this.offset_y+'px':'auto';
+						this.cself.style.left=(this.self_value.width/x)*this.offset_x+'px';
+					}
+					if(height=='auto'){
+						this.cself.setAttribute('is_auto','y');
+					}else{
+						this.cself.setAttribute('is_auto','n');	
+					}
+					if(x=='0'){
+						this.cself.style.display='none';
+						continue;
+					}else{
+						this.cself.style.display='block';
+					}
+					if(this.offset_x==0){
+						this.cself.setAttribute('class','f');
+					}else if(this.offset_x==x-1){
+						this.cself.setAttribute('class','e');
+					}else{
+						this.cself.setAttribute('class','n');
+					}
+					
+					/*랜덤배경설정*/
+					this.randomColorize=['FFE346','E8BE40','FFC353','E89940','FF8E46'];
+					this.cself.style.backgroundColor='#'+this.randomColorize[Math.round(Math.random()*4)];
+					
+					/*
+					this.cself.style.top=(height!='auto')?height*this.offset_y+'px':'auto';
+					this.cself.style.left=(this.self_value.width/x)*this.offset_x+'px';
+					*/
+					$(this.cself).stop(true,false).animate({
+						'top':(height!='auto')?height*this.offset_y+'px':'auto',
+						'left':(this.self_value.width/x)*this.offset_x+'px'
+					},1500,'easeOutCirc');
+					this.cself_position = [parseInt(this.cself.style.top,10),parseInt(this.cself.style.left,10)];
+					this.cself.style.position = 'absolute';
+					this.cself.style.float = 'left';
+					$(this.cself).css({
+						//'top':this.cself_position[0]+'px',
+						//'left':this.cself_position[1]+'px',
+						'width':(this.self_value.width/x)+'px',
+						'height':(height!='auto')?height+'px':'auto'
+					});
+				}
+				this.box.style.width=this.self_value.width+'px';
+				this.box.style.height=height*(this.offset_y+1)+'px';
+			}
+			/*이벤트 여따 넣음*/
+			partful_viewer(ef('#part_viewa'),10,40);
+			ef('.aa')[0].onclick=function(){partful_viewer(ef('#part_viewa'),6,60);};
+			ef('.ab')[0].onclick=function(){partful_viewer(ef('#part_viewa'),10,50);};
+			partful_viewer(ef('#part_viewb'),1,200);
+			ef('.ba')[0].onclick=function(){partful_viewer(ef('#part_viewb'),1,500);};
+			ef('.bb')[0].onclick=function(){partful_viewer(ef('#part_viewb'),2,400);};
+			ef('.bc')[0].onclick=function(){partful_viewer(ef('#part_viewb'),3,350);};
+			ef('.bd')[0].onclick=function(){partful_viewer(ef('#part_viewb'),4,300);};
+			ef('.be')[0].onclick=function(){partful_viewer(ef('#part_viewb'),5,250);};
+			ef('.bf')[0].onclick=function(){partful_viewer(ef('#part_viewb'),6,150);};
+			ef('.bg')[0].onclick=function(){partful_viewer(ef('#part_viewb'),7,100);};
+			ef('.bh')[0].onclick=function(){partful_viewer(ef('#part_viewb'),8,100);};
+			ef('.bi')[0].onclick=function(){partful_viewer(ef('#part_viewb'),9,80);};
+			ef('.bj')[0].onclick=function(){partful_viewer(ef('#part_viewb'),10,75);};
+			ef('.bz')[0].onclick=function(){partful_viewer(ef('#part_viewb'),50,50);};
+			ef('.b0')[0].onclick=function(){partful_viewer(ef('#part_viewb'),1000,25);};
+			ef('.b00')[0].onclick=function(){partful_viewer(ef('#part_viewb'),7,'auto');};
+			ef('.hides')[0].onclick=function(){partful_viewer(ef('#part_viewb'),0,0);};
+			/*END contentOnLoaded*/
+		},function(){
+			/*windowOnLoaded*/
+			console.log('act_window');
+		});
+        </script>
+    </body>
+</html>
