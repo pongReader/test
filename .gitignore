@@ -7,4 +7,5 @@ configs/
 dwsync.xml
 dw_php_codehinting.config
 *.mno
+htdocs.7z
 # End of https://www.gitignore.io/api/dreamweaver
